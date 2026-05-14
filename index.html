@@ -75,30 +75,24 @@
 
         .logo-img {
             height: 48px;
-    width: auto;
-    object-fit: contain;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
-}
-        
+            width: auto;
+            object-fit: contain;
+        }
 
         /* Fallback text logo if image fails */
         .logo-text-fallback {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        .logo-bird {
-            font-size: 1.6rem;
         }
         .logo-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.50rem;
+            font-size: 1.55rem;
             color: var(--navy);
             font-weight: 700;
             letter-spacing: -0.5px;
+            border-left: 4px solid var(--orange);
+            padding-left: 10px;
+            line-height: 1;
         }
         .logo-name span { color: var(--orange); }
 
@@ -672,13 +666,18 @@
 <header class="site-header">
     <div class="header-inner">
         <div class="logo-wrap">
+            <!-- Primary: raw GitHub image -->
             <img 
-                src="https://github.com/mailforavyukt-coder/SIMERRegistration/blob/main/completed%20graduation.png" 
+                id="simerLogoImg"
+                src="https://github.com/mailforavyukt-coder/SIMERRegistration/blob/main/completed%20graduation.png?raw=true" 
                 alt="SIMER Logo" 
                 class="logo-img"
                 onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
             >
-         
+            <!-- Fallback: always rendered, hidden if image loads -->
+            <div class="logo-text-fallback" id="logoFallback" style="display:none;">
+                <span class="logo-name">SI<span>MER</span></span>
+            </div>
         </div>
         <div class="header-meta">
             <span class="badge">
@@ -692,7 +691,7 @@
 
 <!-- HERO -->
 <div class="hero-band">
-    <h1>PGDM Admissions <span class="orange">2025–27</span></h1>
+    <h1>PGDM Admissions <span class="orange">2026-28</span></h1>
     <p>Shivalik Institute of Management Education & Research · Online Application Portal</p>
 </div>
 
@@ -1265,6 +1264,28 @@ let expCount     = 0;
 document.addEventListener('DOMContentLoaded', () => {
     renderUI();
     buildQR();
+
+    // Logo load check — show fallback if image doesn't load within 3s
+    const logoImg = document.getElementById('simerLogoImg');
+    if (logoImg) {
+        const logoTimer = setTimeout(() => {
+            if (!logoImg.complete || logoImg.naturalWidth === 0) {
+                logoImg.style.display = 'none';
+                document.getElementById('logoFallback').style.display = 'flex';
+            }
+        }, 3000);
+        logoImg.addEventListener('load', () => {
+            clearTimeout(logoTimer);
+            logoImg.style.display = '';
+            document.getElementById('logoFallback').style.display = 'none';
+        });
+        logoImg.addEventListener('error', () => {
+            clearTimeout(logoTimer);
+            logoImg.style.display = 'none';
+            document.getElementById('logoFallback').style.display = 'flex';
+        });
+    }
+
     // Radio opt highlight
     document.querySelectorAll('.radio-opt input').forEach(r => {
         r.addEventListener('change', () => {
@@ -1468,7 +1489,7 @@ function buildQR() {
     const el = document.getElementById('qrCode');
     el.innerHTML = '';
     new QRCode(el, {
-        text: 'https://github.com/mailforavyukt-coder/SIMERRegistration/blob/main/QR.jpg',
+        text: 'file:///C:/Users/Admin/Downloads/PHOTO-2026-05-04-14-18-40.jpg',
         width: 180, height: 180,
         colorDark: '#1a1f2e',
         colorLight: '#ffffff',
