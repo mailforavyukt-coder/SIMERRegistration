@@ -1488,9 +1488,14 @@ function pickSlot(btn, day, time) {
 function buildQR() {
     const el = document.getElementById('qrCode');
     el.innerHTML = '';
+    
+    // Paste the long string you got from decoding the image right here
+    const bharatQRData = "000201010211021646049010821231350415512260008212312061661000200821231460826UTIB000166692101001939426526460010A0000005240128MAB.037135005900242@AXISBANK27490010A000000524013103713500590024261000200821231465204829953033565802IN5923SHIVALIK INSTITUTE OF M6004DURG610649100162120708082123146304A311"; 
+
     new QRCode(el, {
-        text: ''upi://pay?pa=simer@oksbi&pn=SIMER College&am=500&cu=INR',
-        width: 180, height: 180,
+        text: bharatQRData, 
+        width: 180, 
+        height: 180,
         colorDark: '#1a1f2e',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
